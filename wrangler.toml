@@ -1,0 +1,11 @@
+name = "sarkari-yojana"
+compatibility_date = "2026-06-19"
+pages_build_output_dir = ".vercel/output/static"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sarkari-yojana-db"
+database_id = "AAPKI_DB_ID_YAHAN"
+
+[triggers]
+crons = ["0 */6 * * *"]
