@@ -6,6 +6,3 @@ pages_build_output_dir = ".vercel/output/static"
 binding = "DB"
 database_name = "sarkari-yojana-db"
 database_id = "4f490775-4109-47d7-9487-f46c422e4156"
-
-[triggers]
-crons = ["0 */6 * * *"]
