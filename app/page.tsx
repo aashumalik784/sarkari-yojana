@@ -1,4 +1,3 @@
-import { getCloudflareContext } from '@opennextjs/cloudflare';
 import Link from 'next/link';
 
 export const runtime = 'edge';
@@ -13,7 +12,9 @@ interface Scheme {
 }
 
 export default async function Home() {
+  const { getCloudflareContext } = await import('@opennextjs/cloudflare');
   const { env } = await getCloudflareContext();
+  
   const { results } = await env.DB.prepare(
     'SELECT id, name, category, launch_date FROM schemes ORDER BY launch_date DESC LIMIT 10'
   ).all<Scheme>();
