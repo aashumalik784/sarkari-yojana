@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 interface Scheme {
   id: number;
   name: string;
-  url: string;
   category: string;
   description: string;
   benefits: string;
@@ -47,7 +46,12 @@ export default function Home() {
       }, 2000);
     } catch (error) {
       setUpdateMessage('Update failed. Try again.');
-      setUpdating(false);    }
+      setUpdating(false);
+    }  };
+
+  const openScheme = (schemeName: string) => {
+    const query = encodeURIComponent(`${schemeName} official website site:gov.in`);
+    window.open(`https://www.google.com/search?q=${query}`, '_blank');
   };
 
   return (
@@ -73,7 +77,7 @@ export default function Home() {
             disabled={updating}
             className="bg-orange-500 text-white px-6 py-4 rounded-xl font-semibold hover:bg-orange-600 disabled:bg-gray-400 transition"
           >
-            {updating ? '⏳ Updating...' : '🔄 Update Now'}
+            {updating ? ' Updating...' : '🔄 Update Now'}
           </button>
         </div>
 
@@ -92,36 +96,32 @@ export default function Home() {
                 अभी कोई योजना नहीं है। ऊपर "Update Now" बटन दबाएं।
               </div>
             ) : (
-              schemes.map((scheme) => (
-                <a
+              schemes.map((scheme) => (                <div
                   key={scheme.id}
-                  href={scheme.url || '#'}
-                  target="_blank"                  rel="noopener noreferrer"
-                  className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border-l-4 border-orange-500 block cursor-pointer"
+                  onClick={() => openScheme(scheme.name)}
+                  className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border-l-4 border-orange-500 cursor-pointer"
                 >
                   <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
                     {scheme.category}
                   </span>
-                  <h2 className="text-lg font-semibold mt-3 mb-2">
+                  <h2 className="text-lg font-semibold mt-3 mb-2 text-gray-900">
                     {scheme.name}
                   </h2>
                   <p className="text-sm text-gray-600 mb-2">
                     {scheme.description}
                   </p>
                   {scheme.benefits && (
-                    <p className="text-sm text-green-600 mb-2">
+                    <p className="text-sm text-green-600 mb-2 font-medium">
                       💰 {scheme.benefits}
                     </p>
                   )}
-                  <p className="text-xs text-gray-500">
-                    📅 {scheme.launch_date}
+                  <p className="text-xs text-gray-500 mb-3">
+                     {scheme.launch_date}
                   </p>
-                  {scheme.url && (
-                    <p className="text-xs text-orange-500 mt-2 font-semibold">
-                      🔗 View Details →
-                    </p>
-                  )}
-                </a>
+                  <p className="text-xs text-orange-600 font-bold">
+                    🔗 Click for Official Website →
+                  </p>
+                </div>
               ))
             )}
           </div>
