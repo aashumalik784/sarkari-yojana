@@ -10,11 +10,11 @@ export async function onRequestGet(context) {
         const params = [];
         
         if (search) {
-            query += " AND (title LIKE ? OR description LIKE ?)";
-            params.push(`%${search}%`, `%${search}%`);
+            query += " AND (name LIKE ? OR description LIKE ? OR category LIKE ?)";
+            params.push(`%${search}%`, `%${search}%`, `%${search}%`);
         }
         
-        query += " ORDER BY created_at DESC LIMIT ?";
+        query += " ORDER BY launch_date DESC LIMIT ?";
         params.push(limit);
         
         const { results } = await db.prepare(query).bind(...params).all();
@@ -26,6 +26,7 @@ export async function onRequestGet(context) {
             }
         });
     } catch (error) {
+        console.error('Database error:', error);
         return new Response(JSON.stringify([]), {
             headers: { 'Content-Type': 'application/json' }
         });
