@@ -1,6 +1,7 @@
 name = "sarkari-yojana"
-compatibility_date = "2026-06-19"
-pages_build_output_dir = ".vercel/output/static"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".open-next"
 
 [[d1_databases]]
 binding = "DB"
