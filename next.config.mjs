@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // Ye line sabse zaroori hai - ye Next.js ko static HTML banane ke liye bolti hai
+  output: 'export',
   images: {
-    unoptimized: true, // Static export ke liye zaroori hai
+    unoptimized: true,
   },
 };
 
