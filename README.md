@@ -6,7 +6,7 @@
 
 ![Founder & Developer](profile.jpg)
 
-### 👨‍💻 Created by [Aapka Naam]
+### 👨‍💻 Created by [Aashu Malik]
 
 **Developer & Founder of Sarkari Yojana Hub**
 
