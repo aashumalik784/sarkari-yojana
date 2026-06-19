@@ -2,6 +2,7 @@ import { getRequestContext } from '@cloudflare/next-on-pages'
 import Link from 'next/link'
 
 export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
 
 type Scheme = {
   id: string
@@ -39,7 +40,7 @@ export default async function HomePage() {
         </p>
       </div>
 
-      {schemes.length === 0 ? (
+      {schemes.length === 0? (
         <div className="text-center bg-white p-10 rounded-lg shadow">
           <p className="text-gray-500 text-lg">Abhi koi yojana available nahi hai.</p>
           <p className="text-sm mt-2 text-gray-400">D1 database me data add karein.</p>
