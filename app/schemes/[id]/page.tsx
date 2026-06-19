@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getRequestContext } from '@cloudflare/next-on-pages'
 
 export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
 
 type Scheme = {
   id: string
@@ -15,7 +16,7 @@ type Scheme = {
   apply_link: string
 }
 
-export default async function Page({ 
+export default async function SchemeDetailPage({ 
   params 
 }: { 
   params: { schemeId: string } 
