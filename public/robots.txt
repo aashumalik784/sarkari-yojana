@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sarkari-yojana.pages.dev/sitemap.xml
