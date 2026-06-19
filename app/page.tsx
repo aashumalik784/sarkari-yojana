@@ -1,40 +1,77 @@
-import Link from 'next/link';
-
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const fetchCache = 'force-no-store';
+'use client';
+import { useEffect, useState } from 'react';
 
 interface Scheme {
-  id: number;
-  name: string;
-  category: string;
-  launch_date: string;
+    id: number;
+    title: string;
+    link: string;
+    category: string;
+    published_date: string;
 }
 
-export default async function Home() {
-  const { getCloudflareContext } = await import('@opennextjs/cloudflare');
-  const { env } = await getCloudflareContext();
-  
-  const { results } = await env.DB.prepare(
-    'SELECT id, name, category, launch_date FROM schemes ORDER BY launch_date DESC LIMIT 10'
-  ).all<Scheme>();
+export default function Home() {
+    const [schemes, setSchemes] = useState<Scheme[]>([]);
+    const [search, setSearch] = useState('');
+    const [loading, setLoading] = useState(true);
 
-  return (
-    <main className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Sarkari Yojana</h1>
-      <div className="grid gap-4">
-        {results.map((scheme) => (
-          <Link 
-            key={scheme.id} 
-            href={`/schemes/${scheme.id}`}
-            className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <h2 className="text-xl font-semibold">{scheme.name}</h2>
-            <p className="text-gray-600">{scheme.category}</p>
-            <p className="text-sm text-gray-500">Launch: {scheme.launch_date}</p>
-          </Link>
-        ))}
-      </div>
-    </main>
-  );
+    useEffect(() => {
+        fetchSchemes();
+    }, [search]);
+
+    const fetchSchemes = async () => {
+        setLoading(true);
+        const res = await fetch(`/api/schemes?q=${search}&limit=50`);
+        const data = await res.json();
+        setSchemes(data);
+        setLoading(false);
+    };
+
+    return (
+        <main className="min-h-screen bg-gradient-to-br from-orange-50 to-white p-6">
+            <div className="max-w-6xl mx-auto">
+                <header className="text-center mb-10">
+                    <h1 className="text-4xl font-bold text-orange-600 mb-2">
+                        🇮🇳 सARKARI YOJANA HUB
+                    </h1>
+                    <p className="text-gray-600">Auto-Updated Government Schemes Directory</p>
+                </header>
+
+                <div className="mb-8">
+                    <input
+                        type="text"
+                        placeholder="🔍 Search schemes..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full p-4 rounded-xl border-2 border-orange-200 focus:border-orange-500 outline-none"
+                    />
+                </div>
+
+                {loading ? (
+                    <div className="text-center py-10">Loading...</div>
+                ) : (
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {schemes.map((scheme) => (
+                            <a
+                                key={scheme.id}
+                                href={scheme.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border-l-4 border-orange-500"
+                            >
+                                <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
+                                    {scheme.category}
+                                </span>
+                                <h2 className="text-lg font-semibold mt-3 mb-2">
+                                    {scheme.title}
+                                </h2>
+                                <p className="text-sm text-gray-500">
+                                    📅 {new Date(scheme.published_date).toLocaleDateString('hi-IN')}
+                                </p>
+                            </a>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </main>
+    );
 }
