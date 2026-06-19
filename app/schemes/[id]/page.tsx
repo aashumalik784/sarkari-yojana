@@ -3,6 +3,7 @@ import { getRequestContext } from '@cloudflare/next-on-pages'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 type Scheme = {
   id: string
@@ -19,13 +20,13 @@ type Scheme = {
 export default async function SchemeDetailPage({ 
   params 
 }: { 
-  params: { schemeId: string } 
+  params: { id: string } 
 }) {
   try {
     const { env } = getRequestContext()
     const { results } = await env.DB.prepare(
       'SELECT * FROM schemes WHERE id =?'
-    ).bind(params.schemeId).all<Scheme>()
+    ).bind(params.id).all<Scheme>()
     
     const scheme = results?.[0]
     
