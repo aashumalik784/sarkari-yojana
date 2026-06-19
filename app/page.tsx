@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 interface Scheme {
   id: number;
@@ -27,7 +27,7 @@ export default async function Home() {
           <Link 
             key={scheme.id} 
             href={`/schemes/${scheme.id}`}
-            className="block p-4 border rounded-lg hover:bg-gray-50"
+            className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors"
           >
             <h2 className="text-xl font-semibold">{scheme.name}</h2>
             <p className="text-gray-600">{scheme.category}</p>
