@@ -13,6 +13,8 @@ export default function Home() {
     const [schemes, setSchemes] = useState<Scheme[]>([]);
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
+    const [updating, setUpdating] = useState(false);
+    const [updateMessage, setUpdateMessage] = useState('');
 
     useEffect(() => {
         fetchSchemes();
@@ -30,6 +32,22 @@ export default function Home() {
         setLoading(false);
     };
 
+    const triggerUpdate = async () => {
+        setUpdating(true);
+        setUpdateMessage('');
+        try {
+            const res = await fetch('/api/cron/auto-update', { method: 'POST' });
+            const data = await res.json();
+            setUpdateMessage(data.message || 'Update successful!');
+            setTimeout(() => {
+                fetchSchemes();
+                setUpdating(false);
+            }, 2000);
+        } catch (error) {
+            setUpdateMessage('Update failed. Try again.');
+            setUpdating(false);
+        }
+    };
     return (
         <main className="min-h-screen bg-gradient-to-br from-orange-50 to-white p-6">
             <div className="max-w-6xl mx-auto">
@@ -40,15 +58,28 @@ export default function Home() {
                     <p className="text-gray-600">Auto-Updated Government Schemes Directory</p>
                 </header>
 
-                <div className="mb-8">
+                <div className="mb-6 flex flex-col sm:flex-row gap-4">
                     <input
                         type="text"
                         placeholder="🔍 योजना खोजें..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full p-4 rounded-xl border-2 border-orange-200 focus:border-orange-500 outline-none"
+                        className="flex-1 p-4 rounded-xl border-2 border-orange-200 focus:border-orange-500 outline-none"
                     />
+                    <button
+                        onClick={triggerUpdate}
+                        disabled={updating}
+                        className="bg-orange-500 text-white px-6 py-4 rounded-xl font-semibold hover:bg-orange-600 disabled:bg-gray-400 transition"
+                    >
+                        {updating ? '⏳ Updating...' : '🔄 Update Now'}
+                    </button>
                 </div>
+
+                {updateMessage && (
+                    <div className="mb-6 p-4 bg-green-100 text-green-700 rounded-xl text-center">
+                        ✅ {updateMessage}
+                    </div>
+                )}
 
                 {loading ? (
                     <div className="text-center py-10">Loading...</div>
@@ -56,7 +87,7 @@ export default function Home() {
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {schemes.length === 0 ? (
                             <div className="col-span-full text-center py-10 text-gray-500">
-                                अभी कोई योजना नहीं है। Auto-update जल्द ही शुरू होगा।
+                                अभी कोई योजना नहीं है। ऊपर "Update Now" बटन दबाएं।
                             </div>
                         ) : (
                             schemes.map((scheme) => (
@@ -65,8 +96,7 @@ export default function Home() {
                                     href={scheme.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border-l-4 border-orange-500"
-                                >
+                                    className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border-l-4 border-orange-500"                                >
                                     <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
                                         {scheme.category}
                                     </span>
