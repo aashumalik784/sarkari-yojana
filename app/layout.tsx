@@ -10,8 +10,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="hi">
       <head>
-        {/* ADSENSE - Jab ID mile toh XXXX ki jagah apni ID dalein */}
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossOrigin="anonymous"></script>
+        {/* ===== GOOGLE ADSENSE ===== */}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3623636841196433" crossOrigin="anonymous"></script>
+        
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className="bg-gradient-to-br from-orange-50 to-white min-h-screen flex flex-col">
@@ -28,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <h4 className="font-bold mb-3">Quick Links</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
                   <li><Link href="/" className="hover:text-orange-400">🏠 Home</Link></li>
-                  <li><Link href="/about" className="hover:text-orange-400">ℹ️ About Us</Link></li>
+                  <li><Link href="/about" className="hover:text-orange-400">️ About Us</Link></li>
                   <li><Link href="/contact" className="hover:text-orange-400">📞 Contact Us</Link></li>
                 </ul>
               </div>
@@ -36,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <h4 className="font-bold mb-3">Legal</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
                   <li><Link href="/privacy" className="hover:text-orange-400">🔒 Privacy Policy</Link></li>
-                  <li><Link href="/disclaimer" className="hover:text-orange-400">⚠️ Disclaimer</Link></li>
+                  <li><Link href="/disclaimer" className="hover:text-orange-400">️ Disclaimer</Link></li>
                 </ul>
               </div>
               <div>
