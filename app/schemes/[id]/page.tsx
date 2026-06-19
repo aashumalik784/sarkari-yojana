@@ -1,94 +1,58 @@
-import { notFound } from 'next/navigation'
-import { getRequestContext } from '@cloudflare/next-on-pages'
+import { notFound } from 'next/navigation';
+import { getRequestContext } from '@cloudflare/next-on-pages';
 
-export const runtime = 'edge'
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
-type Scheme = {
-  id: string
-  name: string
-  description: string
-  category: string
-  eligibility: string
-  benefits: string
-  documents: string
-  last_date: string
-  apply_link: string
+interface Scheme {
+  id: number;
+  name: string;
+  category: string;
+  description: string;
+  eligibility: string;
+  benefits: string;
+  launch_date: string;
 }
 
-export default async function SchemeDetailPage({ 
-  params 
-}: { 
-  params: { id: string } 
-}) {
-  try {
-    const { env } = getRequestContext()
-    const { results } = await env.DB.prepare(
-      'SELECT * FROM schemes WHERE id =?'
-    ).bind(params.id).all<Scheme>()
-    
-    const scheme = results?.[0]
-    
-    if (!scheme) {
-      notFound()
-    }
+export default async function SchemePage({ params }: { params: { id: string } }) {
+  const { env } = getRequestContext();
+  
+  const { results } = await env.DB.prepare(
+    'SELECT * FROM schemes WHERE id =?'
+  ).bind(params.id).all<Scheme>();
 
-    return (
-      <main className="container mx-auto p-4 md:p-8 min-h-screen bg-gray-50">
-        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
-          <span className="inline-block bg-blue-100 text-blue-800 text-sm font-medium mb-4 px-3 py-1 rounded-full">
-            {scheme.category}
-          </span>
-          
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            {scheme.name}
-          </h1>
-          
-          <p className="text-gray-700 text-lg mb-8">
-            {scheme.description}
-          </p>
-          
-          <div className="space-y-4 border-t pt-6">
-            <div>
-              <h3 className="font-bold text-gray-900">Eligibility</h3>
-              <p className="text-gray-600">{scheme.eligibility}</p>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-gray-900">Benefits</h3>
-              <p className="text-gray-600">{scheme.benefits}</p>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-gray-900">Required Documents</h3>
-              <p className="text-gray-600">{scheme.documents}</p>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-gray-900">Last Date to Apply</h3>
-              <p className="text-red-600 font-semibold">{scheme.last_date}</p>
-            </div>
-          </div>
-          
-          <a 
-            href={scheme.apply_link} 
-            className="mt-8 inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Apply Now
-          </a>
-        </div>
-      </main>
-    )
-  } catch (error) {
-    console.error('DB Error:', error)
-    return (
-      <div className="text-center p-8">
-        <h1 className="text-2xl font-bold text-red-600">Error Loading Scheme</h1>
-        <p className="text-gray-600 mt-2">Please try again later.</p>
-      </div>
-    )
+  const scheme = results[0];
+
+  if (!scheme) {
+    notFound();
   }
+
+  return (
+    <main className="p-6 max-w-4xl mx-auto">
+      <a href="/" className="text-blue-600 mb-4 inline-block">← Back</a>
+      <h1 className="text-3xl font-bold mb-4">{scheme.name}</h1>
+      <div className="space-y-4">
+        <div>
+          <span className="font-semibold">Category: </span>
+          <span className="bg-blue-100 px-2 py-1 rounded">{scheme.category}</span>
+        </div>
+        <div>
+          <span className="font-semibold">Launch Date: </span>
+          <span>{scheme.launch_date}</span>
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold mb-2">Description</h2>
+          <p>{scheme.description}</p>
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold mb-2">Eligibility</h2>
+          <p>{scheme.eligibility}</p>
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold mb-2">Benefits</h2>
+          <p>{scheme.benefits}</p>
+        </div>
+      </div>
+    </main>
+  );
 }
