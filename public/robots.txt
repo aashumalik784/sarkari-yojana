@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://sarkari-yojana.pages.dev/sitemap.xml
+Sitemap: https://sarkari-yojana-5rd.pages.dev/sitemap.xml
