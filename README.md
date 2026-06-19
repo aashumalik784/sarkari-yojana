@@ -120,7 +120,7 @@ This is NOT an official government website. All information is provided for educ
 
 <div align="center">
 
-**Made with ❤️ by Aapka Naam**  
+**Made with ❤️ india**  
 © 2026 Sarkari Yojana Hub | All Rights Reserved
 
 ⭐ **If you like this project, give it a star!** ⭐
