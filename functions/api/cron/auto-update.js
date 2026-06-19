@@ -13,7 +13,6 @@ export async function onRequestPost(context) {
             const response = await fetch(feedUrl);
             const xml = await response.text();
             
-            // Extract items from RSS
             const items = xml.match(/<item>[\s\S]*?<\/item>/g) || [];
             
             for (const item of items) {
@@ -22,25 +21,23 @@ export async function onRequestPost(context) {
                 const pubDate = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] || '';
                 const description = item.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/)?.[1] || '';
                 
-                // Check if it's a government scheme
-                const keywords = ['yojna', 'scheme', 'abhiyan', 'mission', 'pm ', 'yojana', 'yojana', 'abhiyan'];
+                const keywords = ['yojna', 'scheme', 'abhiyan', 'mission', 'pm ', 'yojana', 'yojana'];
                 const isScheme = keywords.some(k => title.toLowerCase().includes(k));
                 
-                if (isScheme && link) {
+                if (isScheme && title) {
                     try {
                         await db.prepare(
-                            `INSERT OR IGNORE INTO schemes (title, link, description, published_date, category) 
-                             VALUES (?, ?, ?, ?, ?)`
+                            `INSERT OR IGNORE INTO schemes (name, category, description, launch_date) 
+                             VALUES (?, ?, ?, ?)`
                         ).bind(
                             title.trim(),
-                            link.trim(),
+                            feedUrl.includes('mygov') ? 'MyGov' : 'PIB',
                             description.trim().substring(0, 500),
-                            pubDate,
-                            feedUrl.includes('mygov') ? 'MyGov' : 'PIB'
+                            pubDate || new Date().toISOString().split('T')[0]
                         ).run();
                         newSchemesCount++;
                     } catch (e) {
-                        // Duplicate entry, skip
+                        // Skip duplicates
                     }
                 }
             }
@@ -59,7 +56,6 @@ export async function onRequestPost(context) {
     );
 }
 
-// GET handler for testing
 export async function onRequestGet(context) {
     return new Response(
         JSON.stringify({ 
