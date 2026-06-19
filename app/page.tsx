@@ -1,8 +1,9 @@
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import Link from 'next/link';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 interface Scheme {
   id: number;
@@ -12,7 +13,7 @@ interface Scheme {
 }
 
 export default async function Home() {
-  const { env } = getRequestContext();
+  const { env } = await getCloudflareContext();
   const { results } = await env.DB.prepare(
     'SELECT id, name, category, launch_date FROM schemes ORDER BY launch_date DESC LIMIT 10'
   ).all<Scheme>();
