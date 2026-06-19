@@ -502,4 +502,58 @@ export default function Home() {
                 { name: "Ministry of Electronics & IT", url: "https://meity.gov.in", icon: "💻" },
                 { name: "Ministry of Communications", url: "https://dot.gov.in", icon: "📡" },
                 { name: "Ministry of Labour", url: "https://labour.gov.in", icon: "👷" },
-                { nam
+                { name: "Ministry of Women & Child Dev", url: "https://wcd.nic.in", icon: "👩" },
+                { name: "Ministry of Social Justice", url: "https://socialjustice.gov.in", icon: "⚖️" },
+                { name: "Ministry of Tribal Affairs", url: "https://tribal.gov.in", icon: "🏕️" },
+                { name: "Ministry of Environment", url: "https://moef.gov.in", icon: "🌿" },
+                { name: "Ministry of Science & Tech", url: "https://dst.gov.in", icon: "🔬" },
+                { name: "Ministry of Earth Sciences", url: "https://moes.gov.in", icon: "🌊" },
+                { name: "Ministry of Tourism", url: "https://tourism.gov.in", icon: "🏖️" },
+                { name: "Ministry of Culture", url: "https://indiaculture.gov.in", icon: "🎭" },
+                { name: "Ministry of I&B", url: "https://mib.gov.in", icon: "📺" },
+                { name: "Ministry of Youth & Sports", url: "https://yas.gov.in", icon: "🏅" },
+                { name: "Ministry of Consumer Affairs", url: "https://consumeraffairs.nic.in", icon: "🛒" },
+                { name: "Ministry of Corporate Affairs", url: "https://mca.gov.in", icon: "🏢" },
+                { name: "Ministry of Law & Justice", url: "https://lawmin.gov.in", icon: "⚖️" },
+                { name: "Ministry of Parliamentary Affairs", url: "https://mpa.gov.in", icon: "🏛️" },
+                { name: "Ministry of Skill Development", url: "https://msde.gov.in", icon: "🎯" },
+                { name: "Ministry of AYUSH", url: "https://ayush.gov.in", icon: "🌿" },
+                { name: "Ministry of Fisheries", url: "https://dof.gov.in", icon: "🐟" },
+                { name: "Ministry of Animal Husbandry", url: "https://dahd.gov.in", icon: "🐄" },
+                { name: "Ministry of Jal Shakti", url: "https://jalshakti-dowr.gov.in", icon: "💧" },
+                { name: "Ministry of Cooperation", url: "https://cooperation.gov.in", icon: "🤝" },
+                { name: "Ministry of Food Processing", url: "https://mofpi.gov.in", icon: "🍎" },
+                { name: "NITI Aayog", url: "https://niti.gov.in", icon: "📈" },
+                { name: "RBI", url: "https://rbi.org.in", icon: "🏦" },
+                { name: "SEBI", url: "https://sebi.gov.in", icon: "📉" },
+                { name: "IRDAI", url: "https://irdai.gov.in", icon: "🛡️" },
+                { name: "TRAI", url: "https://trai.gov.in", icon: "📱" },
+                { name: "CAG", url: "https://cag.gov.in", icon: "📊" },
+                { name: "Election Commission", url: "https://eci.gov.in", icon: "🗳️" },
+                { name: "UPSC", url: "https://upsc.gov.in", icon: "📝" },
+                { name: "SSC", url: "https://ssc.nic.in", icon: "📋" },
+                { name: "MyGov", url: "https://mygov.in", icon: "👥" },
+                { name: "Data.gov.in", url: "https://data.gov.in", icon: "📊" },
+                { name: "India.gov.in", url: "https://india.gov.in", icon: "🇮🇳" },
+              ].map((min, i) => (
+                <div key={i} onClick={() => openLink(min.url)} className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100 cursor-pointer flex items-center gap-3 group">
+                  <span className="text-2xl">{min.icon}</span>
+                  <div className="min-w-0">
+                    <h4 className="font-bold text-sm text-gray-900 group-hover:text-orange-600 transition truncate">{min.name}</h4>
+                    <p className="text-[10px] text-blue-600 font-medium truncate">{min.url.replace('https://','')}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        </div>
+
+      {/* ===== ADSENSE BOTTOM BANNER ===== */}
+      <div className="max-w-7xl mx-auto px-4 mb-8">
+        <ins className="adsbygoogle" style={{display:'block'}} data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+      </div>
+    </main>
+  );
+}
+                 
