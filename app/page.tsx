@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 
 interface Scheme {
     id: number;
-    title: string;
-    link: string;
+    name: string;
     category: string;
-    published_date: string;
+    description: string;
+    eligibility: string;
+    benefits: string;
+    launch_date: string;
 }
 
 export default function Home() {
@@ -45,9 +47,9 @@ export default function Home() {
             }, 2000);
         } catch (error) {
             setUpdateMessage('Update failed. Try again.');
-            setUpdating(false);
-        }
+            setUpdating(false);        }
     };
+
     return (
         <main className="min-h-screen bg-gradient-to-br from-orange-50 to-white p-6">
             <div className="max-w-6xl mx-auto">
@@ -61,7 +63,7 @@ export default function Home() {
                 <div className="mb-6 flex flex-col sm:flex-row gap-4">
                     <input
                         type="text"
-                        placeholder="🔍 योजना खोजें..."
+                        placeholder=" योजना खोजें..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 p-4 rounded-xl border-2 border-orange-200 focus:border-orange-500 outline-none"
@@ -91,22 +93,27 @@ export default function Home() {
                             </div>
                         ) : (
                             schemes.map((scheme) => (
-                                <a
+                                <div
                                     key={scheme.id}
-                                    href={scheme.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border-l-4 border-orange-500"                                >
-                                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
+                                    className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border-l-4 border-orange-500"
+                                >                                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
                                         {scheme.category}
                                     </span>
                                     <h2 className="text-lg font-semibold mt-3 mb-2">
-                                        {scheme.title}
+                                        {scheme.name}
                                     </h2>
-                                    <p className="text-sm text-gray-500">
-                                        📅 {new Date(scheme.published_date).toLocaleDateString('hi-IN')}
+                                    <p className="text-sm text-gray-600 mb-2">
+                                        {scheme.description}
                                     </p>
-                                </a>
+                                    {scheme.benefits && (
+                                        <p className="text-sm text-green-600 mb-2">
+                                            💰 {scheme.benefits}
+                                        </p>
+                                    )}
+                                    <p className="text-xs text-gray-500">
+                                        📅 {scheme.launch_date}
+                                    </p>
+                                </div>
                             ))
                         )}
                     </div>
@@ -114,4 +121,4 @@ export default function Home() {
             </div>
         </main>
     );
-}
+                                        }
