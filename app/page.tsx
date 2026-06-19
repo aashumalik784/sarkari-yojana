@@ -7,7 +7,9 @@ interface Scheme {
   category: string;
   description: string;
   benefits: string;
+  eligibility: string;
   launch_date: string;
+  url: string;
 }
 
 export default function Home() {
@@ -24,7 +26,7 @@ export default function Home() {
   const fetchSchemes = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/schemes?q=${search}&limit=50`);
+      const res = await fetch(`/api/schemes?q=${search}&limit=100`);
       const data = await res.json();
       setSchemes(data);
     } catch (error) {
@@ -45,13 +47,17 @@ export default function Home() {
         setUpdating(false);
       }, 2000);
     } catch (error) {
-      setUpdateMessage('Update failed. Try again.');
-      setUpdating(false);
-    }  };
+      setUpdateMessage('Update failed. Try again.');      setUpdating(false);
+    }
+  };
 
-  const openScheme = (schemeName: string) => {
-    const query = encodeURIComponent(`${schemeName} official website site:gov.in`);
-    window.open(`https://www.google.com/search?q=${query}`, '_blank');
+  const openScheme = (schemeName: string, schemeUrl: string) => {
+    if (schemeUrl) {
+      window.open(schemeUrl, '_blank');
+    } else {
+      const query = encodeURIComponent(`${schemeName} official website site:gov.in`);
+      window.open(`https://www.google.com/search?q=${query}`, '_blank');
+    }
   };
 
   return (
@@ -62,6 +68,9 @@ export default function Home() {
             🇮🇳 सरकारी योजना Hub
           </h1>
           <p className="text-gray-600">Auto-Updated Government Schemes Directory</p>
+          <p className="text-sm text-green-600 font-semibold mt-2">
+            Total Schemes: {schemes.length}
+          </p>
         </header>
 
         <div className="mb-6 flex flex-col sm:flex-row gap-4">
@@ -77,7 +86,7 @@ export default function Home() {
             disabled={updating}
             className="bg-orange-500 text-white px-6 py-4 rounded-xl font-semibold hover:bg-orange-600 disabled:bg-gray-400 transition"
           >
-            {updating ? ' Updating...' : '🔄 Update Now'}
+            {updating ? '⏳ Updating...' : '🔄 Update Now'}
           </button>
         </div>
 
@@ -87,8 +96,10 @@ export default function Home() {
           </div>
         )}
 
-        {loading ? (
-          <div className="text-center py-10">Loading...</div>
+        {loading ? (          <div className="text-center py-10">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading {schemes.length} schemes...</p>
+          </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {schemes.length === 0 ? (
@@ -96,27 +107,33 @@ export default function Home() {
                 अभी कोई योजना नहीं है। ऊपर "Update Now" बटन दबाएं।
               </div>
             ) : (
-              schemes.map((scheme) => (                <div
+              schemes.map((scheme) => (
+                <div
                   key={scheme.id}
-                  onClick={() => openScheme(scheme.name)}
-                  className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border-l-4 border-orange-500 cursor-pointer"
+                  onClick={() => openScheme(scheme.name, scheme.url)}
+                  className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition border-l-4 border-orange-500 cursor-pointer transform hover:scale-105"
                 >
-                  <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
+                  <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-semibold">
                     {scheme.category}
                   </span>
-                  <h2 className="text-lg font-semibold mt-3 mb-2 text-gray-900">
+                  <h2 className="text-lg font-bold mt-3 mb-2 text-gray-900">
                     {scheme.name}
                   </h2>
-                  <p className="text-sm text-gray-600 mb-2">
+                  <p className="text-sm text-gray-600 mb-3">
                     {scheme.description}
                   </p>
                   {scheme.benefits && (
-                    <p className="text-sm text-green-600 mb-2 font-medium">
+                    <p className="text-sm text-green-600 mb-2 font-medium bg-green-50 p-2 rounded">
                       💰 {scheme.benefits}
                     </p>
                   )}
+                  {scheme.eligibility && (
+                    <p className="text-xs text-blue-600 mb-2">
+                      👥 {scheme.eligibility}
+                    </p>
+                  )}
                   <p className="text-xs text-gray-500 mb-3">
-                     {scheme.launch_date}
+                    📅 {scheme.launch_date}
                   </p>
                   <p className="text-xs text-orange-600 font-bold">
                     🔗 Click for Official Website →
@@ -128,5 +145,4 @@ export default function Home() {
         )}
       </div>
     </main>
-  );
-}
+  );}
