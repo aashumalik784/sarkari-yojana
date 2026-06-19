@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 export async function GET(request: NextRequest) {
+  noStore(); // Build time pe caching roko
+  
   const { env } = await getCloudflareContext();
   
   const { searchParams } = new URL(request.url);
