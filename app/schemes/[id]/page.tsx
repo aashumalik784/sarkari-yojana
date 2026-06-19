@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 interface Scheme {
   id: number;
@@ -15,7 +16,7 @@ interface Scheme {
 }
 
 export default async function SchemePage({ params }: { params: { id: string } }) {
-  const { env } = getRequestContext();
+  const { env } = await getCloudflareContext();
   
   const { results } = await env.DB.prepare(
     'SELECT * FROM schemes WHERE id =?'
